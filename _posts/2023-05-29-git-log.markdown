@@ -1,0 +1,75 @@
+---
+layout: post
+title:  "A better git log, LOL"
+date:   2023-05-29 10:42:00 +0500
+categories: git
+---
+`git log` is not useful, there is too much information without clear organization.
+
+In my terminal, there are 29 lines of visiblity.  When I use `git log` I see:
+- Commit ids, with details on branches/tags. 
+- Author
+- Date of commit
+- Subject line
+- All body lines of a commit
+- Trailing newline
+
+```console
+commit b79a9a29bd754f887d674b1b3412abbcb45fff5d (HEAD -> main, origin/main, origin/HEAD)
+Author: Peter Nied <peternied@hotmail.com>
+Date:   Mon May 29 10:41:25 2023 -0500
+
+    Adjust description to be more generic
+
+    Signed-off-by: Peter Nied <peternied@hotmail.com>
+
+commit b6586439fc00aef74bfdf13d678ee82deef1a912
+Author: Peter Nied <peternied@hotmail.com>
+Date:   Mon May 29 10:35:03 2023 -0500
+
+    Minor personalization to the configuration
+
+    Signed-off-by: Peter Nied <peternied@hotmail.com>
+
+commit 2a95a3ed500d35e9b2de3fca46b457ad2b887016
+Author: Peter Nied <petern@amazon.com>
+Date:   Wed Jun 29 02:46:18 2022 +0000
+:
+```
+
+#### Pros:
+There is easy access for simple text searching features via VIMs wrapper around.
+
+#### Cons:
+If your codebase is push to a website (GitHub / Gitlab / etc), that website is almost always easier to ready with more information readily avaliable.
+There is alot of wasted space here; typically the author, data, trailing newline are of no use to me.  The full commit id takes up a considerable amount of space and is overkill.
+
+### Alternative git lol
+
+There is critical information missing in the git log, largely due to its amount of space it takes up.  I want to see the relationship between commits.  Since only two commits were visible in the log its hard to see how they are related other than linearly in time.  While this relatinoship is useful, I want to see other branches that might have gotten commits so I can tell what I am doing in my fork versus what is happening in the origin.
+
+This repo has very little going on, but we can already see information that might have been missed by scanning git log.  There is a branch on the origin and it was created three commits ago.  The entire commit history in my terminal and my typos for quick one liners are easily seen.
+
+```console
+PS C:\Users\peter\Documents\GitHub\peternied.github.io> git lol
+* b79a9a2 (HEAD -> main, origin/main, origin/HEAD) Adjust description to be more generic
+* b658643 Minor personalization to the configuration
+* 2a95a3e Fix typo in site title
+| * 0d1be7c (origin/docker-for-windows) Add docker setup for windows
+|/  
+* 211f03c Switch to markdown files for tthe website
+* 49afc52 Small updates for the site configuration
+* 79f470e Basic Jekyll install
+* a05e30b Set theme jekyll-theme-minimal
+* adafef0 First commit
+PS C:\Users\peter\Documents\GitHub\peternied.github.io>
+```
+
+With a minor varition, `git lolb` focuses on your current branch if you are scanning for changes by first commit line and there is no use for the graph.
+
+#### Add git lol to your system
+```
+git config --global --add color.ui true
+git config --global --add alias.lol "log --graph --decorate --pretty=oneline --abbrev-commit --all"
+git config --global --add alias.lolb "log --graph --decorate --pretty=oneline --abbrev-commit"
+```
