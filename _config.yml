@@ -21,8 +21,8 @@
 title: Peter Nied's blog
 email: peternied@hotmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Software developer that delights in small and simple tools. Many years of 
-  experience that might have taught me a thing or two.
+  Software developer that delights in small and simple tools. Capturing my ideas about
+  building software over the internet.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://peternied.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
