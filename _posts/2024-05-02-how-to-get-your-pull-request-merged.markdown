@@ -6,9 +6,9 @@ categories: pull-request
 ---
 You have done it, after hours of effort you fixed an ugly bug locally.  You create a pull request on the upstream repository and wait - and wait.  You have hit wall - what can you do to get your pull request merged?
 
-I have found myself in this situations many times, and I expect to find myself in these same stalled scenarios from time to time.  The following is a set of tools that I use to solve common problems when creating pull requests alongside a list strategies that I wish contributors when I reviewed their pull requests.
+I have found myself in this situations - stalled from time to time.  The following is a set of tools that I use to solve problems when creating pull requests alongside a list strategies that can be used to mitigate these issues to get things done.
 
-## Get Engagement with Maintainers
+## Create Connections
 While we would wish otherwise, maintainers are often busy, making you responsible to drive your pull request the attention it needs to be merged.
 
 ### Working with the Project
@@ -31,7 +31,7 @@ When maintainers engage with your pull request, they are will read the its descr
 
 When including background make sure its done in a way that will allow it to discussed separately from the pull request - an issue is a great place for these details.
 
-## Handling GitHub Action failures
+## Get to Green
 After the pull request is created GitHub Actions will spin up and start verifying your changes.  These checks are added by maintainers to build confidence in changes and the state of the project.  Understanding how these checks work and how to troubleshoot failures can demonstrate the quality of the work you have done.
 
 ### My Change Broke Something?
@@ -45,26 +45,28 @@ Depending on the maturity level of the project you might see failures that you c
 
 You can earn accolades from maintainers by opening pull requests that addresses the unrelated failure.  These contributions help reduce the load on maintainers and improve project quality.  If the project is important to you, this could be a pathway to earn maintainership.
 
-## Engage with Pull Request Feedback
+## Create Consensus
 You have an unmerged pull request that has been reviewed by maintainer(s).  Maybe there is little vague feedback, maybe a horde of suggestions.  This is where understanding the project expectations and communicating your capabilities are key to getting your change merged. 
 
 ### Understand Comments
 Read all the commends on your pull request before you start coding up fixes.  Some comments might be conflicting, some comments might be harder to address, or others you might disagree with.  By taking on the most difficult comments sooner it will prevent you from doing work that you would rollback.
 
 ### Types of Comments
-There are many different styles of review that can be done by maintainers and I've found that the kind of feedback will generally fall into the following areas:
+There are many different styles of review that can be done by maintainers and contributors. I've found that the kind of feedback will generally fall into the following areas:
 
 - Informational, these typically don't require any action but help the contributors or maintainers understand something about the change.
 - Nitpicks, these are things that would be nice to see, no back and forth is required.
 - Required, must be 'resolved' before the PR is merged.
 - Scope, these comments challenge the problem or solution design, even after these are resolved more review comments will be added. 
 
+Focusing on comments that are more difficult will give you a better handle on how much effort it will take to get the pull request merged 
+
 ### Handling Disagreement
+There is going to be feedback you do not want to pursue.  Understanding where the concern are from will help prepare you to address the concern.
 
 
 
-
-### Getting Closure
+## Closure
 
 
 
