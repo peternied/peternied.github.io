@@ -1,0 +1,41 @@
+<div class="sidebar">
+    <h2>{{ site.author.name }}</h2>
+    <p>{{ site.author.bio }}</p>
+    <ul class="social-media">
+      <li><a href="{{ site.author.github }}">GitHub</a></li>
+      <li><a href="{{ site.author.linkedin }}">LinkedIn</a></li>
+    </ul>
+    
+    <h3>Recent Posts</h3>
+    <ul>
+      {% for post in site.posts limit:5 %}
+        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+      {% endfor %}
+    </ul>
+    
+    <h3>Tags</h3>
+    <ul>
+      {% for tag in site.tags %}
+        <li><a href="/tag/{{ tag | slugify }}/">{{ tag }}</a></li>
+      {% endfor %}
+    </ul>
+    
+    <h3>GitHub Repositories</h3>
+    <ul id="github-repos">
+      <!-- GitHub Repos will be loaded here via JavaScript -->
+    </ul>
+  </div>
+  
+  <script>
+    fetch('https://api.github.com/users/peternied/repos')
+      .then(response => response.json())
+      .then(data => {
+        const repoList = document.getElementById('github-repos');
+        data.slice(0, 5).forEach(repo => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<a href="${repo.html_url}">${repo.name}</a>`;
+          repoList.appendChild(listItem);
+        });
+      });
+  </script>
+  
