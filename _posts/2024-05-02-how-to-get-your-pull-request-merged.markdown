@@ -6,7 +6,7 @@ categories: pull-request
 ---
 You have done it, after hours of effort you fixed an ugly bug locally. You create a pull request on the upstream repository and wait - and wait. You have hit a wall - what can you do to get your pull request merged?
 
-I have found myself in this situation - stalled from time to time. The following is a set of tools that I use to solve problems when creating pull requests alongside a list of strategies that can be used to mitigate these issues to get things done. This blog was created in parallel to my recent presentation during OpenSearch Con EU 2024 [^1].
+I have found myself in this situation - stalled from time to time. The following is a set of tools that I use to solve problems when creating pull requests alongside a list of strategies that can be used to mitigate these issues to get things done. This blog was created in parallel to my recent presentation during OpenSearch Con EU 2024[^1].
 
 ## Create Connections
 While we would wish otherwise, maintainers are often busy, making you responsible to drive your pull request the attention it needs to be merged.
@@ -43,7 +43,7 @@ When changes are pushed to your fork, GitHub re-runs the checks. You can inspect
 ### How to Handle Unrelated Failures
 Depending on the maturity level of the project, you might see failures that you cannot explain - they are completely unrelated to your pull request. Search the project's issues to see if it is known, and ask for help from the maintainers. This could look like `@{GITHUB_ID} I am seeing a failure on the link-checker from README.md indicating the help link is broken, I didn't edit this file, can you help me resolve this? `.
 
-You can earn accolades from maintainers by opening pull requests that address the unrelated failure. These contributions help reduce the load on maintainers and improve project quality. If the project is important to you, this could be a pathway to earn maintainership [^2].
+You can earn accolades from maintainers by opening pull requests that address the unrelated failure. These contributions help reduce the load on maintainers and improve project quality. If the project is important to you, this could be a pathway to earn maintainership[^2].
 
 ## Create Consensus
 You have an unmerged pull request that has been reviewed by maintainer(s). Maybe there is little vague feedback, maybe a horde of suggestions. This is where understanding the project expectations and communicating your capabilities are key to getting your change merged.
@@ -70,5 +70,5 @@ After navigating the pull request, review, and merge cycle you are equipped with
 Thank you for your dedication and energy. Through our collective efforts, we continue to shape the future of the open-source community.
 
 ## Resources
- - [^1] How to get your pull request merged [youtube.com](https://www.youtube.com/watch?v=nq4RhrbH3sM)
- - [^2] How to become an OpenSearch Project repo maintainer [youtube.com](https://www.youtube.com/watch?v=UsN7YkCCw-c)
+[^1]: How to get your pull request merged [youtube.com](https://www.youtube.com/watch?v=nq4RhrbH3sM)
+[^2]: How to become an OpenSearch Project repo maintainer [youtube.com](https://www.youtube.com/watch?v=UsN7YkCCw-c)
