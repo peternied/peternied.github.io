@@ -3,6 +3,17 @@ layout: post
 title:  "How to get your pull request merged"
 date:   2024-05-13 17:00:00 +0500
 categories: pull-request
+tags:
+  - GitHub
+  - Open Source
+  - Pull Request
+  - Code Collaboration
+  - Software Development
+  - Contribution Guidelines
+  - Community Engagement
+  - DevOps
+  - Code Review
+  - Project Management
 ---
 You have done it, after hours of effort you fixed an ugly bug locally. You create a pull request on the upstream repository and wait - and wait. You have hit a wall - what can you do to get your pull request merged?
 
