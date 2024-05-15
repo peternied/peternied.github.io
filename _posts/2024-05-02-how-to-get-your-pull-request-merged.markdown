@@ -3,6 +3,7 @@ layout: post
 title:  "How to get your pull request merged"
 date:   2024-05-13 17:00:00 +0500
 categories: pull-request
+author: Peter Nied
 tags:
   - GitHub
   - Open Source
@@ -11,10 +12,9 @@ tags:
   - Software Development
   - Contribution Guidelines
   - Community Engagement
-  - DevOps
   - Code Review
-  - Project Management
 ---
+
 You have done it, after hours of effort you fixed an ugly bug locally. You create a pull request on the upstream repository and wait - and wait. You have hit a wall - what can you do to get your pull request merged?
 
 I have found myself in this situation - stalled from time to time. The following is a set of tools that I use to solve problems when creating pull requests alongside a list of strategies that can be used to mitigate these issues to get things done. This blog was created in parallel to my recent presentation during OpenSearch Con EU 2024[^1].
