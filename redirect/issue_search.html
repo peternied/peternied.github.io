@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Dynamic GitHub Issues Redirect</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1,
+    h2 {
+      color: #333;
+    }
+
+    ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    (function () {
+      // Function to get URL parameters
+      function getQueryParam(param) {
+        var params = new URLSearchParams(window.location.search);
+        return params.get(param);
+      }
+
+      // Get parameters from URL
+      var owner = getQueryParam('owner');
+      var repo = getQueryParam('repo');
+      var tag = getQueryParam('tag');
+      var days = parseInt(getQueryParam('created-since-days'), 10);
+
+      // Check for required parameters
+      if (!owner || !repo || !tag || isNaN(days)) {
+        return;
+      }
+
+      // Get the current date and calculate the target date
+      var today = new Date();
+      var targetDate = new Date(today);
+      targetDate.setDate(today.getDate() - days);
+
+      // Format the date as 'YYYY-MM-DD'
+      var year = targetDate.getFullYear();
+      var month = ("0" + (targetDate.getMonth() + 1)).slice(-2);
+      var day = ("0" + targetDate.getDate()).slice(-2);
+      var formattedDate = year + '-' + month + '-' + day;
+
+      // Construct the URL with the dynamic date and parameters
+      var redirectUrl = `https://github.com/${owner}/${repo}/issues?q=is%3Aissue+is%3Aopen+label%3A${tag}+created%3A%3C${formattedDate}`;
+
+      // Redirect to the constructed URL
+      window.location.href = redirectUrl;
+    })();
+  </script>
+  <noscript>
+    <p>If you are not redirected automatically, follow this <a
+        href="https://github.com/opensearch-project/OpenSearch/issues?q=is%3Aissue+is%3Aopen+label%3Auntriaged">link</a>.
+    </p>
+  </noscript>
+  <h1>GitHub Issue Search with Dynamic Dates</h1>
+  <p id="error-message" class="error">
+    Missing required parameters. Please provide "owner", "repo", "tag", and "created-since-days".
+  </p>
+  <h2>Parameters</h2>
+  <ul>
+    <li><b>owner</b>: The GitHub username or organization that owns the repository. <i>Example:
+        owner=opensearch-project</i></li>
+    <li><b>repo</b>: The name of the GitHub repository. <i>Example: repo=OpenSearch</i></li>
+    <li><b>tag</b>: The label used to filter issues. <i>Example: tag=untriaged</i></li>
+    <li><b>created-since-days</b>: The number of days back from today to filter issues by creation date. <i>Example:
+        created-since-days=14</i></li>
+  </ul>
+  <h2>How to Use</h2>
+  <p>To use this redirect page, append the desired options as query parameters in the URL. For example:</p>
+  <pre>
+  https://peternied.github.io/redirect.html?owner=opensearch-project&repo=OpenSearch&tag=untriaged&created-since-days=75
+  </pre>
+</body>
+
+</html>
