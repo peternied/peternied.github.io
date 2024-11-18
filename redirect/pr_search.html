@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Dynamic GitHub Issues Redirect</title>
+  <title>Dynamic GitHub PR Redirect</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
@@ -43,11 +43,12 @@
       var tag = getQueryParam('tag');
       var createdDays = parseInt(getQueryParam('created-since-days'), 10);
       var updatedDays = parseInt(getQueryParam('updated-since-days'), 10);
+      var mergedDays = parseInt(getQueryParam('merged-since-days'), 10);
       var closedDays = parseInt(getQueryParam('closed-since-days'), 10);
       var isOpen = getQueryParam('is-open') !== 'false'; // Default to true
 
       // Check for required parameters
-      if (!owner || !repo || (isNaN(createdDays) && isNaN(updatedDays) && isNaN(closedDays))) {
+      if (!owner || !repo || (isNaN(createdDays) && isNaN(updatedDays) && isNaN(mergedDays) && isNaN(closedDays))) {
         return;
       }
 
@@ -65,7 +66,7 @@
       }
 
       // Construct the URL with the dynamic date and parameters
-      var query = `is%3Aissue+is%3A${isOpen ? 'open' : 'closed'}`;
+      var query = `is%3Apr+is%3A${isOpen ? 'open' : 'closed'}`;
       if (tag) {
         query += `+label%3A${tag}`;
       }
@@ -75,11 +76,14 @@
       if (!isNaN(updatedDays)) {
         query += `+updated%3A%3C${formatDate(updatedDays)}`;
       }
+      if (!isNaN(mergedDays)) {
+        query += `+merged%3A%3C${formatDate(mergedDays)}`;
+      }
       if (!isNaN(closedDays)) {
         query += `+closed%3A%3C${formatDate(closedDays)}`;
       }
 
-      var redirectUrl = `https://github.com/${owner}/${repo}/issues?q=${query}`;
+      var redirectUrl = `https://github.com/${owner}/${repo}/pulls?q=${query}`;
 
       // Redirect to the constructed URL
       window.location.href = redirectUrl;
@@ -87,31 +91,33 @@
   </script>
   <noscript>
     <p>If you are not redirected automatically, follow this <a
-        href="https://github.com/opensearch-project/OpenSearch/issues?q=is%3Aissue+is%3Aopen">link</a>.
+        href="https://github.com/opensearch-project/OpenSearch/pulls?q=is%3Apr+is%3Amerged">link</a>.
     </p>
   </noscript>
-  <h1>GitHub Issue Search with Dynamic Dates</h1>
+  <h1>GitHub PR Search with Dynamic Dates</h1>
   <p id="error-message" class="error">
-    Missing required parameters. Please provide "owner", "repo", and at least one of "created-since-days", "updated-since-days", or "closed-since-days".
+    Missing required parameters. Please provide "owner", "repo", and at least one of "created-since-days", "updated-since-days", "merged-since-days", or "closed-since-days".
   </p>
   <h2>Parameters</h2>
   <ul>
     <li><b>owner</b>: The GitHub username or organization that owns the repository. <i>Example:
         owner=opensearch-project</i></li>
     <li><b>repo</b>: The name of the GitHub repository. <i>Example: repo=OpenSearch</i></li>
-    <li><b>tag</b>: The label used to filter issues. <i>Example: tag=untriaged</i> (optional)</li>
-    <li><b>created-since-days</b>: The number of days back from today to filter issues by creation date. <i>Example:
+    <li><b>tag</b>: The label used to filter PRs. <i>Example: tag=untriaged</i> (optional)</li>
+    <li><b>created-since-days</b>: The number of days back from today to filter PRs by creation date. <i>Example:
         created-since-days=14</i></li>
-    <li><b>updated-since-days</b>: The number of days back from today to filter issues by last update date. <i>Example:
+    <li><b>updated-since-days</b>: The number of days back from today to filter PRs by last update date. <i>Example:
         updated-since-days=14</i></li>
-    <li><b>closed-since-days</b>: The number of days back from today to filter issues by closed date. <i>Example:
+    <li><b>merged-since-days</b>: The number of days back from today to filter PRs by merged date. <i>Example:
+        merged-since-days=14</i></li>
+    <li><b>closed-since-days</b>: The number of days back from today to filter PRs by closed date. <i>Example:
         closed-since-days=14</i></li>
-    <li><b>is-open</b>: Whether to filter for open or closed issues. <i>Example: is-open=false</i> (optional, defaults to true)</li>
+    <li><b>is-open</b>: Whether to filter for open or closed PRs. <i>Example: is-open=false</i> (optional, defaults to true)</li>
   </ul>
   <h2>How to Use</h2>
   <p>To use this redirect page, append the desired options as query parameters in the URL. For example:</p>
   <pre>
-  https://peternied.github.io/redirect/issue_search.html?owner=opensearch-project&repo=OpenSearch&tag=untriaged&created-since-days=75
+  https://peternied.github.io/redirect/pr_search.html?owner=opensearch-project&repo=OpenSearch&merged-since-days=75&is-open=false
   </pre>
 </body>
 
