@@ -46,7 +46,7 @@
       var closedDays = parseInt(getQueryParam('closed-since-days'), 10);
 
       // Check for required parameters
-      if (!owner || !repo || !tag || (isNaN(createdDays) && isNaN(updatedDays) && isNaN(closedDays))) {
+      if (!owner || !repo || (isNaN(createdDays) && isNaN(updatedDays) && isNaN(closedDays))) {
         return;
       }
 
@@ -64,7 +64,10 @@
       }
 
       // Construct the URL with the dynamic date and parameters
-      var query = `is%3Aissue+is%3Aopen+label%3A${tag}`;
+      var query = `is%3Aissue+is%3Aopen`;
+      if (tag) {
+        query += `+label%3A${tag}`;
+      }
       if (!isNaN(createdDays)) {
         query += `+created%3A%3C${formatDate(createdDays)}`;
       }
@@ -83,19 +86,19 @@
   </script>
   <noscript>
     <p>If you are not redirected automatically, follow this <a
-        href="https://github.com/opensearch-project/OpenSearch/issues?q=is%3Aissue+is%3Aopen+label%3Auntriaged">link</a>.
+        href="https://github.com/opensearch-project/OpenSearch/issues?q=is%3Aissue+is%3Aopen">link</a>.
     </p>
   </noscript>
   <h1>GitHub Issue Search with Dynamic Dates</h1>
   <p id="error-message" class="error">
-    Missing required parameters. Please provide "owner", "repo", "tag", and at least one of "created-since-days", "updated-since-days", or "closed-since-days".
+    Missing required parameters. Please provide "owner", "repo", and at least one of "created-since-days", "updated-since-days", or "closed-since-days".
   </p>
   <h2>Parameters</h2>
   <ul>
     <li><b>owner</b>: The GitHub username or organization that owns the repository. <i>Example:
         owner=opensearch-project</i></li>
     <li><b>repo</b>: The name of the GitHub repository. <i>Example: repo=OpenSearch</i></li>
-    <li><b>tag</b>: The label used to filter issues. <i>Example: tag=untriaged</i></li>
+    <li><b>tag</b>: The label used to filter issues. <i>Example: tag=untriaged</i> (optional)</li>
     <li><b>created-since-days</b>: The number of days back from today to filter issues by creation date. <i>Example:
         created-since-days=14</i></li>
     <li><b>updated-since-days</b>: The number of days back from today to filter issues by last update date. <i>Example:
