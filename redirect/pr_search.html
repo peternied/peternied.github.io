@@ -45,6 +45,7 @@
       var updatedDays = parseInt(getQueryParam('updated-since-days'), 10);
       var mergedDays = parseInt(getQueryParam('merged-since-days'), 10);
       var closedDays = parseInt(getQueryParam('closed-since-days'), 10);
+      var isOpen = getQueryParam('is-open') !== 'false'; // Default to true
 
       // Check for required parameters
       if (!owner || !repo || (isNaN(createdDays) && isNaN(updatedDays) && isNaN(mergedDays) && isNaN(closedDays))) {
@@ -65,7 +66,7 @@
       }
 
       // Construct the URL with the dynamic date and parameters
-      var query = `is%3Apr+is%3Amerged`;
+      var query = `is%3Apr+is%3A${isOpen ? 'open' : 'closed'}`;
       if (tag) {
         query += `+label%3A${tag}`;
       }
@@ -111,11 +112,12 @@
         merged-since-days=14</i></li>
     <li><b>closed-since-days</b>: The number of days back from today to filter PRs by closed date. <i>Example:
         closed-since-days=14</i></li>
+    <li><b>is-open</b>: Whether to filter for open or closed PRs. <i>Example: is-open=false</i> (optional, defaults to true)</li>
   </ul>
   <h2>How to Use</h2>
   <p>To use this redirect page, append the desired options as query parameters in the URL. For example:</p>
   <pre>
-  https://peternied.github.io/redirect/pr_search.html?owner=opensearch-project&repo=OpenSearch&merged-since-days=75
+  https://peternied.github.io/redirect/pr_search.html?owner=opensearch-project&repo=OpenSearch&merged-since-days=75&is-open=false
   </pre>
 </body>
 
