@@ -69,14 +69,15 @@
       if (tag) {
         query += `+label%3A${tag}`;
       }
+      var urlEncodedGreaterThan = '%3E';
       if (!isNaN(createdDays)) {
-        query += `+created%3A%3C${formatDate(createdDays)}`;
+        query += `+created%3A${urlEncodedGreaterThan}${formatDate(createdDays)}`;
       }
       if (!isNaN(updatedDays)) {
-        query += `+updated%3A%3C${formatDate(updatedDays)}`;
+        query += `+updated%3A${urlEncodedGreaterThan}${formatDate(updatedDays)}`;
       }
       if (!isNaN(closedDays)) {
-        query += `+closed%3A%3C${formatDate(closedDays)}`;
+        query += `+closed%3A${urlEncodedGreaterThan}${formatDate(closedDays)}`;
       }
 
       var redirectUrl = `https://github.com/${owner}/${repo}/issues?q=${query}`;
