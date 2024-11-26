@@ -1,87 +1,127 @@
 // Function to get URL parameters
-export function getQueryParam(param) {
-      var params = new URLSearchParams(window.location.search);
-      return params.get(param);
-    }
+function getQueryParam(param) {
+  let params = new URLSearchParams(window.location.search);
+  let value = params.get(param);
+  return value;
+}
 
-export function getQueryParamInt(param) {
-    return parseInt(getQueryParam(param), 10)
+function getQueryParamInt(param) {
+  return parseInt(getQueryParam(param), 10);
 }
 
 // Format date as YYYY-MM-DD
-export function formatDate(days) {
-    var targetDate = new Date(today);
-    targetDate.setDate(today.getDate() - days);
-    var year = targetDate.getFullYear();
-    var month = ("0" + (targetDate.getMonth() + 1)).slice(-2);
-    var day = ("0" + targetDate.getDate()).slice(-2);
-    return year + '-' + month + '-' + day;
+function formatDaysSince(days) {
+  let today = new Date();
+  let targetDate = new Date();
+  targetDate.setDate(today.getDate() - days);
+  let year = targetDate.getFullYear();
+  let month = ("0" + (targetDate.getMonth() + 1)).slice(-2);
+  let day = ("0" + targetDate.getDate()).slice(-2);
+  return year + "-" + month + "-" + day;
 }
-
 
 export function extract(args) {
-    results = {};
-    for (let key in Object.keys(args)) {
-        if (args[key] instanceof Number) {
-            results[key] = getQueryParamInt(key);
-        } else if (args[key] instanceof Boolean) {
-            results[key] = getQueryParam(key) !== 'false';
-        } else {
-            results[key] = getQueryParam(key);
-        }
+  let results = {};
+  for (let key of Object.keys(args)) {
+    if (args[key].type === "number") {
+      results[key] = getQueryParamInt(key);
+    } else if (args[key].type === "boolean") {
+      results[key] = getQueryParam(key) !== "false";
+    } else {
+      results[key] = getQueryParam(key);
     }
-    return results;
+  }
+  return results;
+};
+
+// Construct the URL with the dynamic date and parameters
+export function createRedirUrl(type, params) {
+  // Get the current date
+  let query = filter("is", type);
+  query += "+" + filter("is", params["is-open"] ? "open" : "closed");
+  if (params["tag"]) {
+    query += "+" + filter("label", params["tag"]);
+  }
+
+  query += filterDate("created", params["created-since-days"], ">");
+  query += filterDate("updated", params["updated-since-days"], ">");
+  query += filterDate("merged", params["merged-since-days"], ">");
+  query += filterDate("closed", params["closed-since-days"], ">");
+
+  let redirectUrl = `https://github.com/${params["owner"]}/${params["repo"]}/issues?q=${query}`;
+  return redirectUrl;
+};
+
+function filterDate(verb, value, op) {
+  if (isNaN(value)) {
+    return "";
+  }
+  return "+" + filter(verb, formatDaysSince(value), op);
 }
 
-export function start() {
-    // Get parameters from URL
-    var owner = getQueryParam('owner');
-    var repo = getQueryParam('repo');
-    var tag = getQueryParam('tag');
-    var createdDays = parseInt(getQueryParam('created-since-days'), 10);
-    var updatedDays = parseInt(getQueryParam('updated-since-days'), 10);
-    var closedDays = parseInt(getQueryParam('closed-since-days'), 10);
-    var isOpen = getQueryParam('is-open') !== 'false'; // Default to true
+function filter(name, value, op) {
+  let urlEncodedGreaterThan = "%3E";
+  let urlEncodedColon = "%3A";
+  let opStr;
+  switch (op) {
+    case ">":
+      opStr = urlEncodedGreaterThan;
+      break;
+    case undefined:
+      opStr = "";
+      break;
+    default:
+      throw "Unexpected operation " + op;
+  }
+  return `${name}${urlEncodedColon}${opStr}${value}`;
+}
 
-    let defaultParams = {
-        'owner': undefined,
-        'repo': undefined,
-        'tag': undefined,
-        'created-since-days': 14,
-        'updated-since-days': 14,
-        'closed-since-days': 14,
-        'is-open': false,
+export function generateParamsHTML(params) {
+  let html = "<ul>\n";
+  for (let paramName in params) {
+    let param = params[paramName];
+    let desc = param.description || "";
+    let exampleValue = param.exampleValue || "";
+    let optionalText = param.optional ? " (optional" : "";
+    if (param.defaultValue) {
+      optionalText += `, defaults to ${param.defaultValue}`;
+    }
+    if (optionalText) {
+      optionalText += ")";
     }
 
-    let params = extract(defaultParams);
+    // Build the example text
+    let exampleText = exampleValue
+      ? `<i>Example: ${paramName}=${exampleValue}</i>`
+      : "";
 
-
-
-    // Check for required parameters
-    if (!params['owner'] || !params['repo'] || (isNaN(params['created-since-days']) && isNaN(params['updated-since-days']) && isNaN(params['closed-since-days']))) {
-      return;
+    // Combine description and example
+    let paramText = `  <li><b>${paramName}</b>: ${desc}`;
+    if (exampleText || optionalText) {
+      paramText += " ";
     }
+    if (exampleText) {
+      paramText += `${exampleText}`;
+    }
+    if (optionalText) {
+      paramText += ` ${optionalText}`;
+    }
+    paramText += `</li>\n`;
 
-    // Get the current date
-    let today = new Date();
-    let formattedToday = formatDate(today);
+    html += paramText;
+  }
+  html += "</ul>";
 
-    // Construct the URL with the dynamic date and parameters
-    let query = `is%3Aissue+is%3A${isOpen ? 'open' : 'closed'}`;
-    if (tag) {
-      query += `+label%3A${tag}`;
-    }
-    let urlEncodedGreaterThan = '%3E';
-    if (!isNaN(createdDays)) {
-      query += `+created%3A${urlEncodedGreaterThan}${formatDate(createdDays)}`;
-    }
-    if (!isNaN(updatedDays)) {
-      query += `+updated%3A${urlEncodedGreaterThan}${formatDate(updatedDays)}`;
-    }
-    if (!isNaN(closedDays)) {
-      query += `+closed%3A${urlEncodedGreaterThan}${formatDate(closedDays)}`;
-    }
+  let headerElement = document.querySelector("#Parameters");
+  if (headerElement) {
+    // Create a temporary container to hold the HTML
+    let tempContainer = document.createElement("div");
+    tempContainer.innerHTML = html;
 
-    var redirectUrl = `https://github.com/${owner}/${repo}/issues?q=${query}`;
-    return redirectUrl;
+    // Insert the new elements after the header
+    headerElement.parentNode.insertBefore(
+      tempContainer,
+      headerElement.nextSibling
+    );
+  }
 }
